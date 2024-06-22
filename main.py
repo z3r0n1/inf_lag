@@ -1,20 +1,20 @@
-class Infinite_Lagrange:
+class Infinite_Lagrange_Data:
     def __init__(self) -> None:
         self.__weapon_traits = {
-            "anti-aircraft_special_ammo":"Switches to Special Ammo when striking an aircraft target, increasing the Damage Per Hit by an additional 50",
+            "anti-aircraft_special_ammo":"Switches to Special Ammo when striking an aircraft target, increasing the Damage Per Hit by an additional {}",
             "anti-aircraft_counterattack":"Can counterattack the enemy aerial targets that attacks me",
-            "anti-aircraft_cycle":"The Weapon's operational efficiiency is increased when striking an aircraft target, reducing CD by an additional 25%",
+            "anti-aircraft_cycle":"The Weapon's operational efficiiency is increased when striking an aircraft target, reducing CD by an additional {}",
             "anti-aircraft_support":"Can attack the enemy aerial target that targets friendly ships in the same row",
-            "anti-aircraft_high-speed_strike":"Utilizes the High-Speed Strike mode when striking an aircraft target, reducing the duration of the strikes by an additional 10%",
+            "anti-aircraft_high-speed_strike":"Utilizes the High-Speed Strike mode when striking an aircraft target, reducing the duration of the strikes by an additional {}",
 
             "interception_capability":"Has a chance to intercept Target yourself missiles or torpedoes",
 
             "attack_against_systems":"Has a chance to deal damage to the target's systems. Targeted systems will not include those ot in the Attack Priority.",
 
-            "crit":"Has a 10% chance to deal an additional 120% Crit Damage to the target",
+            "crit":"Has a {} chance to deal an additional {} Crit Damage to the target",
             } # Reestructurar para admitir valores. Quizá enfocarlo a función con return.
 
-        self.__ships = {
+        self.ships = {
             "utility":{
                 "small_utility_ship":{
                     "storage":1500,
@@ -34,7 +34,6 @@ class Infinite_Lagrange:
                     "warp_speed":1500,
                     "active_service":20
                 },
-
                 "large_utility_ship":{
                     "storage":95000,
                     "engineering":3500,
@@ -737,7 +736,7 @@ class Infinite_Lagrange:
                                     "damage_per_hit":25,
                                     "lock-on_efficiency":0,
                                     "module_traits":[
-                                        (self.__weapon_traits['anti-aircraft_special_ammo']),
+                                        (self.weapon_traits(self.__weapon_traits['anti-aircraft_special_ammo'], "50")),
                                         (self.__weapon_traits['anti-aircraft_counterattack']),
                                     ],
                                                         
@@ -1057,7 +1056,7 @@ class Infinite_Lagrange:
                                     "damage_per_hit":75,
                                     "lock-on_efficiency":0,
                                     "module_traits":[
-                                        (self.__weapon_traits['crit']),
+                                        (self.weapon_traits(self.__weapon_traits['crit'], "10%", "120%")),
                                         (self.__weapon_traits['anti-aircraft_counterattack']),
                                     ],
                                                         
@@ -1519,3 +1518,12 @@ class Infinite_Lagrange:
             "carrier":{},
 
         }
+
+    def weapon_traits(self, trait, *args):
+        if len(args) == 1:
+            return trait.format(args[0])
+        elif len(args) == 2:
+            return trait.format(args[0], args[1])
+    
+Inflag = Infinite_Lagrange_Data()
+print(Inflag.ships['frigate']['reliat']['anti-ship_type']['weapons']['anti-ship_torpedo_system']['ct-240a_roland_iron_dwarf_k']['module_traits'][0])
